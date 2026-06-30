@@ -1,3 +1,10 @@
+app.use((req, res, next) => {
+  console.log("================================");
+  console.log("METHOD :", req.method);
+  console.log("URL    :", req.originalUrl);
+  console.log("TIME   :", new Date().toISOString());
+  next();
+});
 const express = require("express");
 
 const app = express();
@@ -26,6 +33,7 @@ app.get("/webhook", (req, res) => {
 
 // WhatsApp'tan gelen mesajlar
 app.post("/webhook", (req, res) => {
+  console.log("POST /webhook GELDİ");
   console.log(JSON.stringify(req.body, null, 2));
   res.sendStatus(200);
 });
