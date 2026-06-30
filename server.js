@@ -40,13 +40,30 @@ app.get("/webhook", (req, res) => {
 });
 
 app.post("/webhook", (req, res) => {
-  console.log("================================");
-  console.log("POST /webhook GELDİ");
-  console.log("RAW BODY:");
-  console.log(req.rawBody);
-  console.log("JSON BODY:");
-  console.log(JSON.stringify(req.body, null, 2));
-  console.log("================================");
+  console.log("POST WEBHOOK GELDİ");
+
+  try {
+    const entry = req.body.entry?.[0];
+    const change = entry?.changes?.[0];
+    const value = change?.value;
+    const message = value?.messages?.[0];
+
+    if (message) {
+      const from = message.from;
+      const name = value.contacts?.[0]?.profile?.name || "Bilinmiyor";
+      const text = message.text?.body || "";
+
+      console.log("================================");
+      console.log("Gönderen :", name);
+      console.log("Numara   :", from);
+      console.log("Mesaj    :", text);
+      console.log("================================");
+    } else {
+      console.log("Mesaj yok.");
+    }
+  } catch (err) {
+    console.error("Webhook Hatası:", err);
+  }
 
   res.sendStatus(200);
 });
