@@ -1,17 +1,17 @@
 {
   "name": "kizik-ai",
   "version": "1.0.0",
-  "description": "Kızık AI WhatsApp Assistant",
+  "description": "Kızık AI",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
+    "@google/genai": "^1.15.0",
     "axios": "^1.8.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
-    "express": "^4.21.2",
-    "@google/genai": "^1.0.0"
+    "express": "^4.21.2"
   }
 }
 
