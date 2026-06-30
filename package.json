@@ -1,0 +1,17 @@
+{
+  "name": "kizik-ai",
+  "version": "1.0.0",
+  "description": "Kızık AI WhatsApp Assistant",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.8.2",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2"
+  }
+}
