@@ -2,7 +2,9 @@ const express = require("express");
 
 const app = express();
 
-// TÜM İSTEKLERİ LOGLA
+const VERIFY_TOKEN = "kizik-ai";
+
+// Her isteği logla
 app.use((req, res, next) => {
   console.log("================================");
   console.log("METHOD:", req.method);
@@ -11,18 +13,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.json());
+// Ham body'yi de yakala
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
 
-const VERIFY_TOKEN = "kizik-ai";
-
-// Ana sayfa
 app.get("/", (req, res) => {
   res.send("Kızık AI çalışıyor.");
 });
 
-// Meta doğrulama
 app.get("/webhook", (req, res) => {
-  console.log("GET WEBHOOK");
+  console.log("GET /webhook");
 
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
@@ -33,13 +36,17 @@ app.get("/webhook", (req, res) => {
     return res.status(200).send(challenge);
   }
 
-  res.sendStatus(403);
+  return res.sendStatus(403);
 });
 
-// WhatsApp mesajları
 app.post("/webhook", (req, res) => {
-  console.log("POST WEBHOOK GELDİ");
+  console.log("================================");
+  console.log("POST /webhook GELDİ");
+  console.log("RAW BODY:");
+  console.log(req.rawBody);
+  console.log("JSON BODY:");
   console.log(JSON.stringify(req.body, null, 2));
+  console.log("================================");
 
   res.sendStatus(200);
 });
@@ -47,5 +54,5 @@ app.post("/webhook", (req, res) => {
 const PORT = process.env.PORT || 10000;
 
 app.listen(PORT, () => {
-  console.log("Server çalışıyor:", PORT);
+  console.log(`Server çalışıyor: ${PORT}`);
 });
