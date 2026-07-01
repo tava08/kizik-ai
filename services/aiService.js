@@ -31,24 +31,38 @@ ${userMessage}
 
 async function askAI(userMessage) {
 
+    if (!userMessage || !userMessage.trim()) {
+        return "Lütfen bir mesaj yaz.";
+    }
+
     try {
 
         const prompt = buildPrompt(userMessage);
-         console.log("🤖 Gemini cevap oluşturuyor...");
+
+        console.log("🤖 Gemini cevap oluşturuyor...");
 
         const result = await model.generateContent(prompt);
 
         const response = await result.response;
 
         const text = response.text();
+
         console.log("✅ Gemini cevap oluşturdu.");
 
-
         if (!text) {
-
             return "Üzgünüm Mehmet, cevap oluşturamadım.";
-
         }
+
+        return text;
+
+    } catch (error) {
+
+        console.error("❌ Gemini Hatası");
+        console.error(error);
+
+        return "Üzgünüm Mehmet, şu anda cevap veremiyorum.";
+    }
+}
 
         return text;
 
