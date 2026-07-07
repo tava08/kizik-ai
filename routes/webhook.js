@@ -18,6 +18,7 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 const { askAI } = require("../services/aiService");
 const { sendText } = require("../services/whatsappService");
+const memory = require("../services/firestoreMemoryService");
 const memory = require("../services/memoryService");
 /**
  * Meta Webhook Doğrulama
@@ -67,6 +68,7 @@ router.post("/webhook", async (req, res) => {
         }
         const messageId = message.id;
         const from = message.from;
+        await memory.getUser(from);
         const text = message.text.body;
 
         // Kullanıcıyı hafızadan al
