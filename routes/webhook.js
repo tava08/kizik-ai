@@ -65,7 +65,11 @@ router.post("/webhook", async (req, res) => {
         }
         const messageId = message.id;
         const from = message.from;
-        await memory.getUser(from);
+        const user = await memory.getUser(from);
+
+        console.log("👤 Firestore Kullanıcısı:");
+
+        console.log(user);
         const text = message.text.body;
 
         // Kullanıcıyı hafızadan al

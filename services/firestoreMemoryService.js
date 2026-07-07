@@ -1,7 +1,11 @@
 const db = require("../config/firebase");
 
-const USERS = "users";
+const USERS = "kullanıcılar";
 
+/**
+ * Kullanıcıyı getir.
+ * Yoksa oluştur.
+ */
 async function getUser(phone) {
 
     const ref = db.collection(USERS).doc(phone);
@@ -12,8 +16,8 @@ async function getUser(phone) {
 
         const user = {
             phone,
-            createdAt: new Date(),
-            updatedAt: new Date(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
             messages: [],
             memory: {}
         };
@@ -24,8 +28,58 @@ async function getUser(phone) {
     }
 
     return doc.data();
+
+}
+
+/**
+ * Mesajı Firestore'a kaydet
+ */
+async function saveMessage(phone, text) {
+
+    const ref = db.collection(USERS).doc(phone);
+
+    const doc = await ref.get();
+
+    if (!doc.exists) {
+        await getUser(phone);
+    }
+
+    await ref.update({
+
+        messages: db.constructor.FieldValue.arrayUnion({
+
+            text,
+            date: new Date().toISOString()
+
+        }),
+
+        updatedAt: new Date().toISOString()
+
+    });
+
+}
+
+/**
+ * Hafızaya bilgi kaydet
+ */
+async function remember(phone, key, value) {
+
+    const ref = db.collection(USERS).doc(phone);
+
+    await ref.set({
+
+        memory: {
+            [key]: value
+        },
+
+        updatedAt: new Date().toISOString()
+
+    }, { merge: true });
+
 }
 
 module.exports = {
-    getUser
+    getUser,
+    saveMessage,
+    remember
 };
