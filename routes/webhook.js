@@ -18,7 +18,7 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 const { askAI } = require("../services/aiService");
 const { sendText } = require("../services/whatsappService");
-
+const memory = require("../services/memoryService");
 /**
  * Meta Webhook Doğrulama
  */
@@ -68,6 +68,12 @@ router.post("/webhook", async (req, res) => {
         const messageId = message.id;
         const from = message.from;
         const text = message.text.body;
+
+        // Kullanıcıyı hafızadan al
+        const user = memory.getUser(from);
+
+        // Mesajı hafızaya kaydet
+        memory.saveMessage(from, text);;
 
         console.log("");
         console.log("========================================");
