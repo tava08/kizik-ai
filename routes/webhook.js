@@ -19,10 +19,7 @@ const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const { askAI } = require("../services/aiService");
 const { sendText } = require("../services/whatsappService");
 const memory = require("../services/firestoreMemoryService");
-const memory = require("../services/memoryService");
-/**
- * Meta Webhook Doğrulama
- */
+
 router.get("/webhook", (req, res) => {
 
     const mode = req.query["hub.mode"];
