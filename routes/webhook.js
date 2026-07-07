@@ -73,7 +73,7 @@ router.post("/webhook", async (req, res) => {
         const text = message.text.body;
 
         // Kullanıcıyı hafızadan al
-        const user = memory.getUser(from);
+        
 
         // Mesajı hafızaya kaydet
         //memory.saveMessage(from, text);;
