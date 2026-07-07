@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const db = require("./config/firebase");
 
 const webhookRoutes = require("./routes/webhook");
 
@@ -16,10 +17,29 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 10000;
 
-app.listen(PORT, () => {
-console.log("=================================");
-console.log("🚀 Kızık AI v1.0");
-console.log("Port :", PORT);
-console.log(`URL  : http://localhost:${PORT}`);
-console.log("================================="); 
-});    
+app.listen(PORT, async () => {
+
+    console.log("=================================");
+    console.log("🚀 Kızık AI v1.0");
+    console.log("Port :", PORT);
+    console.log(`URL  : http://localhost:${PORT}`);
+    console.log("=================================");
+
+    try {
+
+        await db.collection("system").doc("startup").set({
+            status: "online",
+            startedAt: new Date()
+        });
+
+        console.log("🔥 Firestore bağlantısı başarılı.");
+
+    } catch (err) {
+
+        console.error("❌ Firestore bağlantı hatası");
+
+        console.error(err);
+
+    }
+
+});
