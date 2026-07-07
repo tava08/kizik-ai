@@ -37,12 +37,14 @@ function getUser(phone) {
         };
 
         saveUsers(users);
+        
     }
 
     return users[phone];
 }
 
 function saveMessage(phone, message) {
+    console.log("🧠 saveMessage çağrıldı:", phone, message);
     const users = loadUsers();
 
     if (!users[phone]) {
@@ -62,6 +64,7 @@ function saveMessage(phone, message) {
     users[phone].updatedAt = new Date().toISOString();
 
     saveUsers(users);
+    console.log("💾 users.json yazıldı.");
 }
 
 function remember(phone, key, value) {
