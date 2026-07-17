@@ -71,7 +71,8 @@ router.post("/webhook", async (req, res) => {
 
         console.log(user);
         const text = message.text.body;
-
+        // Kullanıcının mesajını Firestore'a kaydet
+        await memory.saveMessage(from, "user", text);
         // Kullanıcıyı hafızadan al
         
 
@@ -102,11 +103,15 @@ router.post("/webhook", async (req, res) => {
 
         console.log("🤖 AI Cevabı");
 
-        console.log(answer);
+console.log(answer);
 
-        await sendText(from, answer);
+// AI cevabını Firestore'a kaydet
+await memory.saveMessage(from, "assistant", answer);
 
-        console.log("✅ Cevap gönderildi.");
+// WhatsApp'a gönder
+await sendText(from, answer);
+
+console.log("✅ Cevap gönderildi.");
 
         return res.sendStatus(200);
 
