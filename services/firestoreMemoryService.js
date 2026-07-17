@@ -34,24 +34,28 @@ async function getUser(phone) {
 /**
  * Mesajı Firestore'a kaydet
  */
-async function saveMessage(phone, text) {
+/**
+ * Mesajı Firestore'a kaydet
+ */
+async function saveMessage(phone, role, text) {
 
-    const ref = db.collection(USERS).doc(phone);
+    const userRef = db.collection(USERS).doc(phone);
 
-    const doc = await ref.get();
+    const doc = await userRef.get();
 
     if (!doc.exists) {
         await getUser(phone);
     }
 
-    await ref.update({
+    await userRef.collection("messages").add({
 
-        messages: db.constructor.FieldValue.arrayUnion({
+        role,
+        text,
+        createdAt: new Date().toISOString()
 
-            text,
-            date: new Date().toISOString()
+    });
 
-        }),
+    await userRef.update({
 
         updatedAt: new Date().toISOString()
 
