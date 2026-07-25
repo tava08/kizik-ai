@@ -81,9 +81,34 @@ async function remember(phone, key, value) {
     }, { merge: true });
 
 }
+/**
+ * Son konuşmaları getir
+ */
+async function getRecentMessages(phone, limit = 10) {
 
+    const snapshot = await db
+        .collection(USERS)
+        .doc(phone)
+        .collection("messages")
+        .orderBy("createdAt", "desc")
+        .limit(limit)
+        .get();
+
+    const messages = [];
+
+    snapshot.forEach(doc => {
+        messages.push(doc.data());
+    });
+
+    // Eski → Yeni sırasına çevir
+    messages.reverse();
+
+    return messages;
+
+}
 module.exports = {
     getUser,
     saveMessage,
-    remember
+    remember,
+    getRecentMessages
 };
