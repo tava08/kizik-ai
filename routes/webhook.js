@@ -67,10 +67,15 @@ router.post("/webhook", async (req, res) => {
         const from = message.from;
         const user = await memory.getUser(from);
 
-        console.log("👤 Firestore Kullanıcısı:");
+console.log("👤 Firestore Kullanıcısı:");
+console.log(user);
 
-        console.log(user);
-        const text = message.text.body;
+const history = await memory.getRecentMessages(from);
+
+console.log("📚 Son Konuşmalar:");
+console.log(history);
+
+const text = message.text.body;
         // Kullanıcının mesajını Firestore'a kaydet
         await memory.saveMessage(from, "user", text);
         // Kullanıcıyı hafızadan al
