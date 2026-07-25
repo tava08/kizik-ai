@@ -17,7 +17,7 @@ ${userMessage}
 `;
 }
 
-async function askAI(userMessage) {
+async function askAI(userMessage, history = "") {
 
     if (!userMessage || !userMessage.trim()) {
 
@@ -36,7 +36,7 @@ ${userMessage}
 
     try {
 
-        const prompt = buildPrompt(userMessage, "");
+        const prompt = buildPrompt(userMessage, history);
 
         console.log("🤖 Gemini cevap oluşturuyor...");
 

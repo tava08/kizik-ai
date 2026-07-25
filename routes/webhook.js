@@ -74,7 +74,20 @@ const history = await memory.getRecentMessages(from);
 
 console.log("📚 Son Konuşmalar:");
 console.log(history);
+const historyText = history
+    .map(item => {
 
+        const who = item.role === "user"
+            ? "Kullanıcı"
+            : "Asistan";
+
+        return `${who}: ${item.text}`;
+
+    })
+    .join("\n\n");
+
+console.log("📖 Gemini Geçmişi");
+console.log(historyText);
 const text = message.text.body;
         // Kullanıcının mesajını Firestore'a kaydet
         await memory.saveMessage(from, "user", text);
@@ -94,7 +107,7 @@ const text = message.text.body;
         console.log("🆔 Mesaj ID :", messageId);
         console.time("Gemini");
 
-        const answer = await askAI(text);
+        const answer = await askAI(text, historyText);
 
         console.timeEnd("Gemini");
 
