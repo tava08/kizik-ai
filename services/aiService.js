@@ -7,7 +7,7 @@
 const { model } = require("../config/gemini");
 const systemPrompt = require("../prompts/systemPrompt");
 
-function buildPrompt(userMessage) {
+function buildPrompt(userMessage, history = "") {
     return `
 ${systemPrompt}
 
@@ -20,12 +20,23 @@ ${userMessage}
 async function askAI(userMessage) {
 
     if (!userMessage || !userMessage.trim()) {
-        return "Lütfen bir mesaj yaz.";
-    }
+
+       return `
+${systemPrompt}
+
+GEÇMİŞ KONUŞMALAR
+
+${history}
+
+KULLANICI
+
+${userMessage}
+`;
+    
 
     try {
 
-        const prompt = buildPrompt(userMessage);
+        const prompt = buildPrompt(userMessage, "");
 
         console.log("🤖 Gemini cevap oluşturuyor...");
 
