@@ -32,7 +32,7 @@ KULLANICI
 
 ${userMessage}
 `;
-    
+    }  
 
     try {
 
