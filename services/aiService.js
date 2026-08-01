@@ -5,7 +5,7 @@
  */
 
 const { model } = require("../config/gemini");
-const systemPrompt = require("../prompts/systemPrompt");
+const systemPrompt = require("../src/application/prompts/systemPrompt");
 
 function buildPrompt(userMessage, history = "") {
     return `
