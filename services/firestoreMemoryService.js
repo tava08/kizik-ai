@@ -1,4 +1,4 @@
-const db = require("../src/adapters/database/firestore");
+const db = require("../config/firebase");
 
 const USERS = "kullanıcılar";
 
